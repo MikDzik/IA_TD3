@@ -11,8 +11,6 @@ import com.sun.javafx.TempState;
 import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
-import jeux.dominos.CoupDominos;
-import jeux.dominos.HeuristiquesDominos;
 
 public class Minimax implements AlgoJeu {
 
@@ -79,24 +77,22 @@ public class Minimax implements AlgoJeu {
 	public CoupJeu meilleurCoup(PlateauJeu p) {
 		/* A vous de compléter le corps de ce fichier */
 		int max = -100000;
-		int tmpScore = 0;
-		PlateauJeu tmpPlat = p.copy();
+		int tmpScore = -100000;
+		///PlateauJeu tmpPlat = p.copy();
 		/// a changer
 		CoupJeu aJoue = null;
-		for (CoupJeu coup : tmpPlat.coupsPossibles(joueurMax)){
+		for (CoupJeu coup : p.coupsPossibles(joueurMax)) {
+			PlateauJeu tmpPlat = p.copy();
 			tmpPlat.joue(joueurMax, coup);
-			tmpScore = maxMin(tmpPlat, PROFMAXDEFAUT - 1);
+			tmpScore = minMax(tmpPlat, profMax - 1);
 
-			if (tmpScore > max){
+			if (tmpScore > max) {
 				max = tmpScore;
 				aJoue = coup;
 			}
 
 		}
-
-
 		return aJoue;
-
 	}
 
 	// -------------------------------------------
@@ -111,15 +107,16 @@ public class Minimax implements AlgoJeu {
 	// -------------------------------------------
 
 	private int maxMin(PlateauJeu p, int profondeur) {
-		if ((p.coupsPossibles(joueurMin).size() == 1) || (profondeur == 0)) {
-			return HeuristiquesDominos.hblanc.eval(p, joueurMin);
+		if ((p.coupsPossibles(joueurMax).size() == 0) || (profondeur == 0)) {
+			return h.eval(p, joueurMax);
 		}
 		int max = -1000;
-		int tmp = 0;
+		int tmp = -1000;
 
-		PlateauJeu jeu = p.copy();
-		for (CoupJeu coup : jeu.coupsPossibles(joueurMin)) {
-			jeu.joue(joueurMin, coup);
+
+		for (CoupJeu coup : p.coupsPossibles(joueurMax)) {
+			PlateauJeu jeu = p.copy();
+			jeu.joue(joueurMax, coup);
 			tmp = minMax(jeu, profondeur - 1);
 
 			if (tmp > max) {
@@ -131,15 +128,17 @@ public class Minimax implements AlgoJeu {
 	}
 
 	private int minMax(PlateauJeu p, int profondeur) {
-		if ((p.coupsPossibles(joueurMax).size() == 1) || (profondeur == 0)) {
-			return HeuristiquesDominos.hnoir.eval(p, joueurMax);
+		if ((p.coupsPossibles(joueurMin).size() == 0) || (profondeur == 0)) {
+
+			return h.eval(p, joueurMin);
 		}
 		int min = 1000;
-		int tmp = 0;
+		int tmp = 1000;
 
-		PlateauJeu jeu = p.copy();
-		for (CoupJeu coup : jeu.coupsPossibles(joueurMax)) {
-			jeu.joue(joueurMax, coup);
+
+		for (CoupJeu coup : p.coupsPossibles(joueurMin)) {
+			PlateauJeu jeu = p.copy();
+			jeu.joue(joueurMin, coup);
 			tmp = maxMin(jeu, profondeur - 1);
 
 			if (tmp < min) {

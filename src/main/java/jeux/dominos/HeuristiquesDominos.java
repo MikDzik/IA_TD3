@@ -10,16 +10,31 @@ public class HeuristiquesDominos{
 	public static  Heuristique hblanc = new Heuristique(){
 
 		public int eval(PlateauJeu p, Joueur j){
-			/*A COMPLETER*/
-			return p.coupsPossibles(j).size();
+			if (p.getClass().equals(PlateauDominos.class))
+			{
+					PlateauDominos p2 = (PlateauDominos) p;
+					//if (p2.finDePartie()){ return 99; }
+					return p2.nbCoupsBlanc()-p2.nbCoupsNoir();
+			}
+
+			else {
+				return -100;
+			}
+
+
 		}
 	};
 
 	public static  Heuristique hnoir = new Heuristique(){
 
 		public int eval(PlateauJeu p, Joueur j){
-			/*A COMPLETER*/
-			return p.coupsPossibles(j).size();
+			if (p.getClass().equals(PlateauDominos.class))
+			{
+					PlateauDominos p2 = (PlateauDominos) p;
+					//if (p2.finDePartie()){ return 99; }
+					return p2.nbCoupsNoir()-p2.nbCoupsBlanc();
+			}
+			else return -100;
 		}
 	};
 
