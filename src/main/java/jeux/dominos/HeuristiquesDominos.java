@@ -13,7 +13,7 @@ public class HeuristiquesDominos{
 			if (p.getClass().equals(PlateauDominos.class))
 			{
 					PlateauDominos p2 = (PlateauDominos) p;
-					//if (p2.finDePartie()){ return 99; }
+					if (p2.nbCoupsNoir() == 0){ return 99; }
 					return p2.nbCoupsBlanc()-p2.nbCoupsNoir();
 			}
 
