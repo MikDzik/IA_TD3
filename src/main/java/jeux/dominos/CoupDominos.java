@@ -3,21 +3,21 @@ import iia.jeux.modele.CoupJeu;
 
 public class CoupDominos implements CoupJeu{
 
-	/****** Attributs *******/ 
+	/****** Attributs *******/
 
 	private int ligne;
 
 	private int colonne;
 
 
-	/****** Clonstructeur *******/ 
+	/****** Constructeur *******/
 
 	public CoupDominos(int l, int c) {
 		ligne = l;
 		colonne = c;
 	}
 
-	/****** Accesseurs *******/ 
+	/****** Accesseurs *******/
 
 	public int getLigne() {
 		return ligne;
@@ -27,7 +27,7 @@ public class CoupDominos implements CoupJeu{
 		return colonne;
 	}
 
-	/****** Accesseurs *******/ 
+	/****** Accesseurs *******/
 
 	public String toString() {
 		return "("+ligne+","+colonne+")";
