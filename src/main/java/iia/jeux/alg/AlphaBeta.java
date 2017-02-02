@@ -1,5 +1,7 @@
 package iia.jeux.alg;
 
+import java.util.ArrayList;
+
 import iia.jeux.modele.CoupJeu;
 import iia.jeux.modele.PlateauJeu;
 import iia.jeux.modele.joueur.Joueur;
@@ -94,10 +96,11 @@ public class AlphaBeta implements AlgoJeu {
 	// Méthodes internes
 	// -------------------------------------------
 	private int alphaBeta(PlateauJeu p, int profMax2, int alpha, int beta, boolean maximizingPlayer) {
-		if (profMax2 == 0 || p.coupsPossibles(joueurMax).size() == 0){
-			return h.eval(p, joueurMax);
-		}
+
 		if (maximizingPlayer){
+			if (profMax2 <= 0 || p.coupsPossibles(joueurMax).isEmpty()){
+				return h.eval(p, joueurMax);
+			}
 			int v = Integer.MIN_VALUE;
 			for (CoupJeu coup : p.coupsPossibles(joueurMax)){
 				PlateauJeu temp = p.copy();
@@ -111,6 +114,9 @@ public class AlphaBeta implements AlgoJeu {
 			return v;
 		}
 		else{
+			if (profMax2 <= 0 || p.coupsPossibles(joueurMin).isEmpty()){
+				return h.eval(p, joueurMin);
+			}
 			int v = Integer.MAX_VALUE;
 			for (CoupJeu coup : p.coupsPossibles(joueurMin)){
 				PlateauJeu temp = p.copy();

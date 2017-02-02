@@ -23,8 +23,8 @@ public class PartieDominos {
 
 
         AlgoJeu AlgoJoueur[] = new AlgoJeu[2];
-        AlgoJoueur[0] = new AlphaBeta(HeuristiquesDominos.hblanc, jBlanc, jNoir, 6); // Il faut remplir la méthode !!!
-        AlgoJoueur[1] = new AlphaBeta(HeuristiquesDominos.hnoir, jNoir, jBlanc, 6);  // Il faut remplir la méthode !!!
+        AlgoJoueur[0] = new AlphaBeta(HeuristiquesDominos.hblanc, jBlanc, jNoir, 5); // Il faut remplir la méthode !!!
+        AlgoJoueur[1] = new AlphaBeta(HeuristiquesDominos.hnoir, jNoir, jBlanc, 2);  // Il faut remplir la méthode !!!
 
         System.out.println("TD IIA n.3 - Algorithmes pour les Jeux");
         System.out.println("Etat Initial du plateau de jeu:");
@@ -40,7 +40,7 @@ public class PartieDominos {
 
         // A chaque itération de la boucle, on fait jouer un des deux joueurs
         // tour a tour
-        jnum = 0; // On commence par le joueur Blanc (arbitraire)
+        jnum = 1; // On commence par le joueur Blanc (arbitraire)
 
         while (!jeufini) {
             System.out.println("" + plateauCourant);
@@ -56,7 +56,6 @@ public class PartieDominos {
                 System.out.println("Recherche du meilleur coup avec l'algo " + AlgoJoueur[jnum]);
                 meilleurCoup = AlgoJoueur[jnum].meilleurCoup(plateauCourant);
                 System.out.println("Coup joué : " + meilleurCoup + " par le joueur " + lesJoueurs[jnum]);
-
                 plateauCourant.joue(lesJoueurs[jnum], meilleurCoup);
                 // Le coup est effectivement joué
                 jnum = 1 - jnum;

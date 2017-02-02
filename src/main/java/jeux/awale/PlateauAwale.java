@@ -145,7 +145,31 @@ public class PlateauAwale implements PlateauJeu {
 
 	}
 
-	public void joue(Joueur joueur, CoupJeu c) {
+	public void joue(Joueur joueur, CoupJeu c){
+
+		PlateauAwale ptemp = (PlateauAwale) this.copy();
+		ptemp.joueMange(joueur, c);
+		CoupAwale ca = (CoupAwale) c;
+		if(ca.getLigne() == 0 ){
+			if(ptemp.affamer(joueurDeux)){
+				joueLaisse(joueur, c);
+			}
+			else{
+				joueMange(joueur, c);
+			}
+		}
+		else{
+			if(ptemp.affamer(joueurUn)){
+				joueLaisse(joueur, c);
+			}
+			else{
+				joueMange(joueur, ca);
+			}
+		}
+
+	}
+
+	private void joueMange(Joueur joueur, CoupJeu c) {
 		CoupAwale cd = (CoupAwale) c;
 		int ligne = cd.getLigne();
 		int colonne = cd.getColonne();
@@ -220,6 +244,63 @@ public class PlateauAwale implements PlateauJeu {
 		}
 	}
 
+	private void joueLaisse(Joueur joueur, CoupJeu c) {
+		CoupAwale cd = (CoupAwale) c;
+		int ligne = cd.getLigne();
+		int colonne = cd.getColonne();
+		int graines = damier[ligne][colonne];
+		damier[ligne][colonne] = VIDE;
+
+		if (ligne == 0) {
+			for (int i = colonne - 1; i >= 0; i--) {
+				if (i != colonne && graines > 0) {
+					damier[0][i]++;
+					graines--;
+				}
+			}
+			while (graines > 0) {
+
+				for (int i = 0; i < TAILLE; i++) {
+					if (graines > 0) {
+						damier[1][i]++;
+						graines--;
+
+					}
+				}
+				for (int i = TAILLE - 1; i >= 0; i--) {
+					if (i != colonne && graines > 0) {
+						damier[0][i]++;
+						graines--;
+					}
+				}
+			}
+		} else {
+			for (int i = colonne + 1; i < TAILLE; i++) {
+				if (i != colonne && graines > 0) {
+					damier[ligne][i]++;
+					graines--;
+				}
+			}
+			while (graines > 0) {
+				for (int i = TAILLE - 1; i >= 0; i--) {
+					if (graines > 0) {
+						damier[0][i]++;
+						graines--;
+
+					}
+				}
+				for (int i = 0; i < TAILLE; i++) {
+					if (i != colonne && graines > 0) {
+						damier[ligne][i]++;
+						graines--;
+					}
+				}
+			}
+
+		}
+	}
+
+
 	/* ********************* Autres méthodes ***************** */
 
 	/*
@@ -230,6 +311,37 @@ public class PlateauAwale implements PlateauJeu {
 	 * damier[l][c+1] == VIDE); else return (damier[l][c] == VIDE &&
 	 * damier[l+1][c] == VIDE); }
 	 */
+
+	public int gagnantj1(){
+		if (finDePartie()){
+			if (scoreUn > scoreDeux){
+				return Integer.MAX_VALUE;
+			}
+			if (scoreUn < scoreDeux){
+				return  Integer.MIN_VALUE;
+			}
+			return 0;
+		}
+		else{
+			return scoreUn - scoreDeux;
+		}
+	}
+
+	public int gagnantj2(){
+		if (finDePartie()){
+			if (scoreUn < scoreDeux){
+				return Integer.MAX_VALUE;
+			}
+			if (scoreUn > scoreDeux){
+				return Integer.MIN_VALUE;
+			}
+			return 0;
+		}
+		else{
+			return scoreDeux - scoreUn;
+		}
+	}
+
 
 	private boolean affamer(Joueur j) {
 		if (j == joueurUn) {
@@ -258,12 +370,22 @@ public class PlateauAwale implements PlateauJeu {
 			}
 			retstr += "|\n";
 		}
-		retstr += "joueurDeux" + scoreDeux + "\n";
+		retstr += "joueur deux: " + scoreDeux + "\n";
 		return retstr;
 	}
 
 	public void printPlateau(PrintStream out) {
 		out.println(this.toString());
+	}
+
+	public String printWinner(){
+			if(scoreUn > scoreDeux){
+				return "Le joueur un a gagné";
+			}
+			if (scoreUn < scoreDeux){
+				return "Le joueur deux a gagné";
+			}
+			return "Partie nulle";
 	}
 
 }

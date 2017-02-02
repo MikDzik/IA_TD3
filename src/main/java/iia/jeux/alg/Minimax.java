@@ -58,6 +58,19 @@ public class Minimax implements AlgoJeu {
 	// -------------------------------------------
 	// Constructeurs
 	// -------------------------------------------
+	public int getNbfeuilles(){
+		return nbfeuilles;
+	}
+
+	public int getNbnoeuds(){
+		return nbnoeuds;
+	}
+
+
+
+	// -------------------------------------------
+	// Constructeurs
+	// -------------------------------------------
 	public Minimax(Heuristique h, Joueur joueurMax, Joueur joueurMin) {
 		this(h, joueurMax, joueurMin, PROFMAXDEFAUT);
 	}
@@ -76,8 +89,8 @@ public class Minimax implements AlgoJeu {
 	// -------------------------------------------
 	public CoupJeu meilleurCoup(PlateauJeu p) {
 		/* A vous de compléter le corps de ce fichier */
-		int max = -100000;
-		int tmpScore = -100000;
+		int max = Integer.MIN_VALUE;
+		int tmpScore = Integer.MIN_VALUE;
 		///PlateauJeu tmpPlat = p.copy();
 		/// a changer
 		CoupJeu aJoue = null;
@@ -107,11 +120,13 @@ public class Minimax implements AlgoJeu {
 	// -------------------------------------------
 
 	private int maxMin(PlateauJeu p, int profondeur) {
+		nbnoeuds++;
 		if ((p.coupsPossibles(joueurMax).size() == 0) || (profondeur == 0)) {
+			nbfeuilles++;
 			return h.eval(p, joueurMax);
 		}
-		int max = -1000;
-		int tmp = -1000;
+		int max = Integer.MIN_VALUE;
+		int tmp = Integer.MIN_VALUE;
 
 
 		for (CoupJeu coup : p.coupsPossibles(joueurMax)) {
@@ -128,12 +143,13 @@ public class Minimax implements AlgoJeu {
 	}
 
 	private int minMax(PlateauJeu p, int profondeur) {
+		nbnoeuds++;
 		if ((p.coupsPossibles(joueurMin).size() == 0) || (profondeur == 0)) {
-
+			nbfeuilles++;
 			return h.eval(p, joueurMin);
 		}
-		int min = 1000;
-		int tmp = 1000;
+		int min = Integer.MAX_VALUE;
+		int tmp = Integer.MAX_VALUE;
 
 
 		for (CoupJeu coup : p.coupsPossibles(joueurMin)) {
